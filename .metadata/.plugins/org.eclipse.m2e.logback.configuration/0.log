@@ -13349,3 +13349,5 @@
 2021-02-27 15:44:04,092 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
 2021-02-27 15:44:04,112 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 17 resources
 2021-02-27 15:44:04,125 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-27 15:44:04,125 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2021-02-27 15:44:04,125 [Worker-63: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tkarn\myshop-workspace\myshop\src\test\resources
