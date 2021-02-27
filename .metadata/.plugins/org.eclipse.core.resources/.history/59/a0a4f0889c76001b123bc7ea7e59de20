@@ -1,0 +1,14 @@
+package com.myshop;
+
+public class Test {
+	public static void main(String[] args) {
+
+		
+	}
+	
+	static class Person {
+		public String name = "name...";
+		public static String myname = "myname...";
+	}
+
+}

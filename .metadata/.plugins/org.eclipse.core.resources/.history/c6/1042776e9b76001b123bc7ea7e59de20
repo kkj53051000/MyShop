@@ -1,0 +1,15 @@
+package com.myshop;
+
+public class Test {
+	static String name = "DF";
+
+	public static void main(String[] args) {
+		
+	}
+	
+	class Person {
+		public String name = "name...";
+		public static String myname = "myname...";
+	}
+
+}

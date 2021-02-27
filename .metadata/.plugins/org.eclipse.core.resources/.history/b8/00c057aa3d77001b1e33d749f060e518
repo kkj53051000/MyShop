@@ -1,0 +1,28 @@
+package com.myshop.domain;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.TableGenerator;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter @Setter
+@TableGenerator(
+		name = "REVIEWANSWER_SEQ_GENERATOR",
+		table = "MYSHOP_SEQUENCES",
+		pkColumnValue = "REVIEWANSWER_SEQ", allocationSize = 50)
+public class Rivewanswer {
+	@Id @GeneratedValue(strategy = GenerationType.AUTO, generator = "REVIEWANSWER_SEQ_GENERATOR")
+	@Column(name = "reviewanswer_id")
+	private long id;
+	private String content;
+	
+	private User user;
+	
+	private Review review;
+}

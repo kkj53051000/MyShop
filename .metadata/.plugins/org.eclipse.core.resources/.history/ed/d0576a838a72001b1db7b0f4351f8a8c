@@ -1,0 +1,6 @@
+package com.myshop.controller;
+
+@Controller
+public class OrderinfoController {
+
+}

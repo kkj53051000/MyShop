@@ -1,0 +1,18 @@
+package com.myshop;
+
+class Team {
+	
+}
+
+public class Test {
+	public static void main(String[] args) {
+		Person person = new Person();
+	}
+	
+	class Person {
+		public String name = "name...";
+	}
+
+}
+
+

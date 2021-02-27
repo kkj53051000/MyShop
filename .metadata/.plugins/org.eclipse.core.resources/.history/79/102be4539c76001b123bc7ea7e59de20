@@ -1,0 +1,31 @@
+package com.myshop;
+
+public class Test {
+	String name;
+	
+	static String name2 = "Z";
+	
+	public Test(String name) {
+		this.name = name;
+	}
+	
+	public static void main(String[] args) {
+
+	Test a = new Test("Z");
+	Test b = new Test("B");
+
+	Test.name2 = "ZZZZZzzzzzzz";
+	System.out.println(a.name2);
+	System.out.println(b.name2);
+		
+		
+		
+		
+	}
+	
+	class Person {
+		public String name = "name...";
+		public static String myname = "myname...";
+	}
+
+}

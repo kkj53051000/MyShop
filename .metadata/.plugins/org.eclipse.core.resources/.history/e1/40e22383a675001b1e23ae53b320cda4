@@ -1,0 +1,27 @@
+package com.myshop.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.myshop.service.NoticeService;
+import com.myshop.vo.NoticeForm;
+
+@Controller
+public class NoticeController {
+	@Autowired
+	private NoticeService noticeService;
+	
+	@GetMapping("/notice-upload")
+	public String noticeUploadPage() {
+		return "notice-upload";
+	}
+	
+	@PostMapping("/notice/upload")
+	public String noticeUplaod(NoticeForm noticeForm, HttpServletRequest request) {
+		
+	}
+}
