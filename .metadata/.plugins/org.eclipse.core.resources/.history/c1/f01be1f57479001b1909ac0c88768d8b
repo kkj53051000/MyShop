@@ -48,9 +48,9 @@ public class ProductController {
 	
 	@GetMapping("/product-upload")
 	public String ProductUploadPage() {
-		int a = 3;
 		return "product-upload";
 	}
+	
 	
 	@PostMapping("/product/upload")
 	public String ProductUpload(ProductForm productForm, HttpServletRequest request, HttpSession session) throws IOException, ServletException {			

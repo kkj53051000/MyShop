@@ -90,8 +90,6 @@
 	
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>	
 	<script>
-		let pk = 0;
-	
 	  	const myList = [];
 	  	var price = 0
 	  	
@@ -104,8 +102,7 @@
 	  	}
 	  	
 	  	document.querySelector("#info").addEventListener('change', function() {
-	  		console.log("추가할때 pk", pk)
-	  		pk++;
+	  		
 	  		
 	  		
 	  		const check = 0

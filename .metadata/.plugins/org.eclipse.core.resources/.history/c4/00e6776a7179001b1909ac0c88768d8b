@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -24,7 +23,6 @@ import com.myshop.service.ProductinfoService;
 import com.myshop.service.ReviewService;
 import com.myshop.service.ReviewimgService;
 import com.myshop.service.UserService;
-
 
 @Controller
 public class ReviewController {

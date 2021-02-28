@@ -25,6 +25,11 @@ import com.myshop.service.ReviewService;
 import com.myshop.service.ReviewimgService;
 import com.myshop.service.UserService;
 
+@MultipartConfig(
+		fileSizeThreshold=1024*1024,
+		maxFileSize=1024*1024*5,
+		maxRequestSize=1024*1024*5*5
+)
 
 @Controller
 public class ReviewController {

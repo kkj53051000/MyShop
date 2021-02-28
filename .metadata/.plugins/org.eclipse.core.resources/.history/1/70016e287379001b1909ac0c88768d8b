@@ -11,7 +11,7 @@
 	
 	<div>
 		<div>
-			<form action="/review/uplaod" method="POST" enctype="multipart/form-data">
+			<form action="/review/uplaod" method="POST">
 				내용 : <input name="content"/><br/>
 				<input name="img" type="file" multiple="multiple"/><br/>
 				<input name="productid" type="hidden" value="${product.id}"/><br/>

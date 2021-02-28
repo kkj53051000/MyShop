@@ -76,6 +76,7 @@ public class OrderController {
 		
 		order = orderService.getOrder(order.getId());
 		
+		
 		for(int i = 0; i < orderRequest.size(); i++) {
 			Orderinfo orderinfo = new Orderinfo(orderRequest.get(i).getAmount(), order, productinfos.get(i));
 			orderinfoService.saveorderinfo(orderinfo);

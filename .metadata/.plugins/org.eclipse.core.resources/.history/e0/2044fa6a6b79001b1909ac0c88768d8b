@@ -104,8 +104,7 @@
 	  	}
 	  	
 	  	document.querySelector("#info").addEventListener('change', function() {
-	  		console.log("추가할때 pk", pk)
-	  		pk++;
+	  		
 	  		
 	  		
 	  		const check = 0
