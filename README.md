@@ -1,4 +1,4 @@
-# myshop
+# MyShop
 
 MyShop 프로젝트
 
