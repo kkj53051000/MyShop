@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import com.myshop.domain.Order;
+import com.myshop.domain.OrderStatus;
 
 @Repository
 public class OrderRepository {
@@ -38,5 +39,9 @@ public class OrderRepository {
 	
 	public void deleteOrder(Order order) {
 		em.remove(order);
+	}
+	
+	public void alertStatusOrder(Order order) {
+		order.setOrderStatus(OrderStatus.CANCEL);
 	}
 }

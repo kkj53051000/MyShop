@@ -31,7 +31,11 @@ public class OrderService {
 		return orders;
 	}
 	
-	public void cancelOrder(Order order) {
+	public void removeOrder(Order order) {
 		orderRepository.deleteOrder(order);
+	}
+	
+	public void cancelOrder(Order order) {
+		orderRepository.alertStatusOrder(order);
 	}
 }

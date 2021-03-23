@@ -6,24 +6,36 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="price"/>
+		<item key="selection" value="session.setAttri"/>
 		<list key="findhistory">
-			<item value="price"/>
-			<item value="product_id"/>
-			<item value="productForm"/>
-			<item value="product"/>
-			<item value="orderRequest"/>
-			<item value="OrderRequest"/>
+			<item value="session.setAttri"/>
+			<item value="model.add"/>
+			<item value="imgList"/>
+			<item value="files"/>
+			<item value="들"/>
+			<item value="reviewimgService"/>
+			<item value="&amp;&amp;"/>
+			<item value="cancel_button"/>
+			<item value="ali"/>
+			<item value="al"/>
+			<item value="cartList"/>
+			<item value="cartForms"/>
+			<item value="imgLits"/>
+			<item value="pr_id"/>
 			<item value="myList"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1446"/>
-		<item key="DIALOG_Y_ORIGIN" value="189"/>
+		<item key="DIALOG_X_ORIGIN" value="863"/>
+		<item key="DIALOG_Y_ORIGIN" value="196"/>
 		<item key="DIALOG_WIDTH" value="288"/>
 		<item key="DIALOG_HEIGHT" value="391"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="729"/>
+		<item key="DIALOG_Y_ORIGIN" value="403"/>
 	</section>
 </section>

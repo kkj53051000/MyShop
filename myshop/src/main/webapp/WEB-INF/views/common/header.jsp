@@ -70,15 +70,16 @@
 				</c:if>
 				
 				<c:if test="${user == null}">
-					<span><a href="/join">회원가입</a></span>
 					<span><a href="/login">로그인</a></span>
+					<span><a href="/join">회원가입</a></span>
+					<span><a href="/cart-page">장바구니</a></span>
 				</c:if>
 				<c:if test="${user != null}">
 					<strong>관리자</strong>
 					<span><a href="/admin/product-list">제품상세등록</a></span>
 					<span><a href="/product-upload">제품등록</a></span>
 					<span><a href="/order/list">주문내역</a></span>
-					<span><a href="##">카트</a></span>
+					<span><a href="/cart-page">장바구니</a></span>
 					<span><a href="##">마이페이지</a></span>
 					<span><a href="/user/logout">로그아웃</a></span>
 				</c:if>

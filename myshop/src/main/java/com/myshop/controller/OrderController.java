@@ -12,9 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.myshop.domain.Order;
+import com.myshop.domain.OrderStatus;
 import com.myshop.domain.Orderinfo;
 import com.myshop.domain.Productinfo;
 import com.myshop.domain.User;
@@ -25,6 +25,7 @@ import com.myshop.service.ProductService;
 import com.myshop.service.ProductinfoService;
 import com.myshop.service.UserService;
 import com.myshop.vo.OrderForm;
+import com.myshop.vo.OrderList;
 import com.myshop.vo.ProductinfoOrderForm;
 
 import lombok.Getter;
@@ -70,7 +71,7 @@ public class OrderController {
 		}
 		
 		// 주문 처리
-		Order order = new Order(user);
+		Order order = new Order(user, OrderStatus.SUCCESS);
 		
 		orderService.saveOrder(order);
 		
@@ -98,27 +99,10 @@ public class OrderController {
 		public long productId;
 		public int amount;
 	}
+
 	
-	/*
-	@Getter
-	@Setter
-	static class OrderRequest {
-		
-		List<OrderInfo> orders;
-		
-		@Getter
-		@Setter
-		public static class OrderInfo{
-			public long productId;
-			public int amount;
-		}
-	}
-	*/
-	
-	
-	
-	@PostMapping("/order/cancel")
-	public String orderCancel(HttpServletRequest request) {
+	@PostMapping("/order/delete")
+	public String orderDelete(HttpServletRequest request) {
 		long productinfo_id = Long.parseLong(request.getParameter("productinfo_id"));
 		Productinfo productinfo = productinfoService.getInfo(productinfo_id);
 		
@@ -127,10 +111,31 @@ public class OrderController {
 		
 		
 		//productinfoService.cancelInfo(productinfo, order.getOrderAmount());
-		orderService.cancelOrder(order);
+		orderService.removeOrder(order);
 		
 		return "redirect:/order/list";
 		
+	}
+	
+	@GetMapping("/order/cancel")
+	public String orderCancel(HttpServletRequest request) {
+		long order_id = Integer.parseInt(request.getParameter("order_id"));
+		
+		Order order = orderService.getOrder(order_id);
+		
+		orderService.cancelOrder(order);
+		
+		List<Orderinfo> orderinfos = orderinfoService.getOrderinfos(order_id);
+		
+		// ProductInfo 수량 처리
+		for(int i=0; i<=orderinfos.size(); i++) {
+			
+			Productinfo productinfo = productinfoService.getInfo(orderinfos.get(i).getProductinfo().getId());
+			
+			productinfoService.cancelInfo(productinfo, orderinfos.get(i).getProductinfo().getAmount());
+		}
+		
+		return "redirect:/order/list";
 	}
 	
 	@GetMapping("/order/list")
@@ -139,63 +144,50 @@ public class OrderController {
 		HttpSession session = request.getSession();
 		UserSession userSession = (UserSession)session.getAttribute("user");
 		
+		
+		List<OrderList> orderList = new ArrayList<OrderList>();
+		
 		List<Order> orders = orderService.getOrders(userSession.getId());
 		
-		model.addAttribute("orders", orders);
+		for(int i=0; i <orders.size(); i++) {
+			List<Orderinfo> orderinfos = new ArrayList<Orderinfo>();
+			orderinfos = orderinfoService.getOrderinfos(orders.get(i).getId());
+			
+			OrderList orderOne = new OrderList(orders.get(i), orderinfos);
+			
+			orderList.add(orderOne);
+		}
 		
+		//model.addAttribute("orders", orders);
+		model.addAttribute("orderList", orderList);
+		
+		
+		/*
+		// JSP 세팅 VO
+		List<OrderList> orderList = new ArrayList<OrderList>();
+		
+		List<Order> orders = orderService.getOrders(userSession.getId());
+		
+		for(int i=0; i <orders.size(); i++) {
+			List<Orderinfo> orderinfos = new ArrayList<Orderinfo>();
+			orderinfos = orderinfoService.getOrderinfos(orders.get(i).getId());
+			
+			List<OrderForm> orderForms = new ArrayList<>();
+			for(int j = 0; j < orderinfos.size(); j++) {
+				OrderForm orderForm = new OrderForm(orderinfos.get(j).getProductinfo().getId(), orderinfos.get(j).getAmount());
+				orderForms.add(orderForm);
+			}
+			
+			OrderList orderOne = new OrderList(orders.get(i).getId(), orders.get(i).getOrderStatus(), orderForms);
+			
+			orderList.add(orderOne);
+		}
+		
+		//model.addAttribute("orders", orders);
+		model.addAttribute("orderList", orderList);
+		*/
 		return "order-details";
 	}
-	
-	
-	
-	
-	
-	@PostMapping("/test")
-	public String test(@RequestBody MyRequest myRequest) {
-		// myRequest.getOrders().get(0).productId;
-		return "";
-	}
-	
-	
-	/*
-	 * {
-	 * 	name: "DFD",
-	 *  age : 3,
-	 *  orders: [
-	 *  	{ productId: 3 },
-	 *      { productId: 3 }
-	 *  ]
-	 * }
-	 * 
-	 * 
-	 * */
-	
-	
-	
-	@Getter
-	@Setter
-	static class MyRequest {
-		public String name;
-		public int age;
-		
-		public List<Orders> orders;
-		
-		@Getter
-		@Setter
-		public static class Orders {
-			public int productId;
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }

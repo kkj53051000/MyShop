@@ -1,5 +1,7 @@
 package com.myshop.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,5 +16,19 @@ public class ReviewRepository {
 	
 	public void insertReview(Review review) {
 		em.persist(review);
+	}
+	
+	public Review selectReview(long id) {
+		Review review = em.find(Review.class, id);
+		
+		return review;
+	}
+	
+	public List<Review> selectReviews(long id){
+		List<Review> reviews = em.createQuery("select r From Review r join fetch r.user where r.productinfo.id = :id", Review.class)
+				.setParameter("id", id)
+				.getResultList();
+		
+		return reviews;
 	}
 }

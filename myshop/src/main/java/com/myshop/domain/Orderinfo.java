@@ -33,6 +33,7 @@ public class Orderinfo {
 	@JoinColumn(name = "productinfo_id")
 	private Productinfo productinfo;
 	
+	
 	public Orderinfo() {}
 	
 	public Orderinfo(int amount, Order order, Productinfo productinfo) {

@@ -23,12 +23,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.myshop.domain.Category;
 import com.myshop.domain.Product;
 import com.myshop.domain.Productinfo;
+import com.myshop.domain.Review;
+import com.myshop.domain.Reviewimg;
 import com.myshop.domain.User;
 import com.myshop.dto.UserSession;
 import com.myshop.service.ProductService;
 import com.myshop.service.ProductinfoService;
+import com.myshop.service.ReviewService;
+import com.myshop.service.ReviewimgService;
 import com.myshop.service.UserService;
 import com.myshop.vo.ProductForm;
+import com.myshop.vo.ProductReviews;
 import com.myshop.vo.ProductsForm;
 
 @MultipartConfig(
@@ -45,10 +50,13 @@ public class ProductController {
 	private UserService userService;
 	@Autowired
 	private ProductinfoService productinfoService;
+	@Autowired
+	private ReviewService reviewService;
+	@Autowired
+	private ReviewimgService reviewimgService;
 	
 	@GetMapping("/product-upload")
 	public String ProductUploadPage() {
-		int a = 3;
 		return "product-upload";
 	}
 	
@@ -150,9 +158,24 @@ public class ProductController {
 		
 		Product product = productService.getProduct(id);
 		List<Productinfo> productinfo = productinfoService.getInfos(id);
+		List<Review> reviews = reviewService.findReviews(id);
+		
+		List<ProductReviews> reviewsInfos = new ArrayList<>();
+		
+		for(int i=0; i<reviews.size(); i++) {
+			
+			List<Reviewimg> reviewimgs = reviewimgService.getReviewimgs(reviews.get(i).getId());
+			
+			ProductReviews reviewsInfo = new ProductReviews(reviews.get(i), reviewimgs);
+			
+			
+			reviewsInfos.add(reviewsInfo);
+		}
+		
 		
 		model.addAttribute("product", product);
 		model.addAttribute("productinfo", productinfo);
+		model.addAttribute("reviews", reviewsInfos);
 		
 		
 		return "product-page";

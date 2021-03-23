@@ -11,6 +11,8 @@
 			justify-content: center;
 			background-color: #dcdcdc;
 			height: 150px;
+			
+			min-width: 1600px;
 		}
 	</style>
 </head>

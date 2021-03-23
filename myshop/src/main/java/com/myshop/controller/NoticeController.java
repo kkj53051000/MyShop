@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.myshop.domain.Notice;
-import com.myshop.domain.Product;
 import com.myshop.domain.User;
 import com.myshop.dto.UserSession;
 import com.myshop.service.NoticeService;

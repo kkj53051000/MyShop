@@ -32,12 +32,56 @@
 			margin-left: 100px;
 		}
 		.cancel_button{
+			border: 0px;
+			background-color: white;
 			
+			font-weight: bold;
 		}
 		.pdom{
 			display: inline-block;
 			margin-right: 10px;
 		}
+		
+		
+		
+		.addImg{
+	        width: 100px;
+	        height: 100px;
+	        margin-right: 10px;
+	
+	        display: flex;
+	        box-sizing: border-box;
+	    }
+	    #cancelBtn{
+	        width: 100px;
+	        height: 100px;
+	
+	        display: flex;
+	        box-sizing: border-box;
+	    }
+	    .buttons{
+	    	display: flex;
+			flex-direction: row;
+			
+			
+	    }
+	    .orderBtn{
+	    	border: 0px;
+			background-color: white;
+	    }
+	    .cartBtn{
+	    	border: 0px;
+			background-color: white;
+	    }
+	    .review{
+	    	width: 100%;
+	    	display: flex;
+			flex-direction: column;
+			align-items: center;
+	    }
+	    .review_img{
+	    	width: 100px;
+	    }
 	</style>
 </head>
 <body>
@@ -49,10 +93,10 @@
 			</div>
 			<div class="product_data">
 				<div class="product_name">
-					<h1>${product.name}</h1>
+					<h1>${product.name}</h1><br/>
 				</div>
 				<div class="product_info">
-					<p>제품 설명</p>
+					<b>제품 설명</b>
 					<p>${product.info}</p>
 					<b>가격</b> <p>${product.price}</p>
 				</div>
@@ -61,11 +105,13 @@
 					<select name="productinfo_id" id="info">
 						<option class="choice" value="none">[필수]색상 사이즈 선택</option>
 						<c:forEach var="info" items="${productinfo}">
+							<!-- 추가가격 있을때 -->
 							<c:if test="${info.add_price < 1}">
-								<option class="choice" value="${info.id}" data-productid="${product.id}" data-addprice="${info.add_price}">색상 : ${info.color} 사이즈 : ${info.size}</option>
+								<option class="choice" value="${info.id}" data-productid="${product.id}" data-addprice="${info.add_price}">${info.color} ${info.size}</option>
 							</c:if>
+							<!-- 추가가격 없을때 -->
 				       		<c:if test="${info.add_price >= 1}">
-								<option class="choice" value="${info.id}" data-productid="${product.id}" data-addprice="${info.add_price}">색상 : ${info.color} 사이즈 : ${info.size} (+ ${info.add_price} 원)</option>
+								<option class="choice" value="${info.id}" data-productid="${product.id}" data-addprice="${info.add_price}">${info.color} ${info.size} (+ ${info.add_price} 원)</option>
 							</c:if>
 				        </c:forEach>
 			    	</select>
@@ -73,7 +119,14 @@
 					<br/><br/>
 					<div class='result'></div>
 					<div class='price'></div>
-					<button class="orderBtn">구매하기</button>
+					<hr/>
+					<div class="buttons">
+						<button class="orderBtn"><img src="/public/upload/order.png" alt="."></button><br/>
+						<!-- 장바구니 버튼 -->
+						<button class="cartBtn"><img src="/public/upload/cart.png" alt="."></button>
+						
+					</div>
+					
 				<!-- </form> -->
 				</div>
 			</div>
@@ -81,9 +134,34 @@
 		
 		
 	</div>
-	<div>
-		<h1>리뷰</h1>
-		<%@ include file="review-upload.jsp" %>
+	
+	
+	
+	<div class="review">
+		<div class="review_write">
+			<h1>리뷰</h1>
+			<div>
+				<div class="imgList"></div>
+				
+				내용 : <input class="reviewcontent" name="content"/><br/>
+				<input class = "imgUpload" name="img" type="file" multiple="multiple"/><br/>
+				<input name="productid" type="hidden" value="${product.id}"/><br/>
+				<button class="reviewBtn">작성</button>
+				
+			</div>
+			<div>
+				<h1>리뷰 목록</h1>
+				<c:forEach var="review" items="${reviews}">
+					<hr>
+					<span>닉네임 : ${review.review.user.nickname} <br>내용 : ${review.review.content}</span><br>
+					<c:forEach var="img" items="${review.reviewimgs}">
+						<img class="review_img" src="${img.img_src}"/>
+					</c:forEach>
+					<br>
+				</c:forEach>
+				<hr>
+			</div>
+		</div>
 	</div>
 	
 	<%@ include file="common/footer.jsp" %>
@@ -92,8 +170,10 @@
 	<script>
 		let pk = 0;
 	
-	  	const myList = [];
-	  	var price = 0
+	  	let myList = [];
+	  	let cartList = []
+	  	let price = 0
+	  	let count_pk = 0
 	  	
 	  	const priceDOM = document.createElement('h1')
 		priceDOM.innerText = price + "원"
@@ -116,7 +196,7 @@
 	  		
 	  		var product_id = document.querySelector("#info").value;
 	  		var product = document.querySelector("#info")
-	  		var pr_id = product.options[product.selectedIndex].getAttribute('data-productid');
+	  		var pr_id = Number(product.options[product.selectedIndex].getAttribute('data-productid'));
 	  		var pr_addPrice = Number(product.options[product.selectedIndex].getAttribute('data-addprice'));
 	  		var product_text = product.options[product.selectedIndex].text
 	  		var amount = document.querySelector(".amount").value;
@@ -147,10 +227,30 @@
 	  			tempList.productId = product_id
 	  			tempList.amount = amount
 	  			
+	  			const cartTempList = {}
+	  			
+	  			cartTempList.productId = product_id
+	  			cartTempList.amount = amount
+	  			
+	  			count_pk = count_pk + 1
+	  			tempList.primary = count_pk
+	  			
+	  			
 	  			myList.push(tempList)
+	  			cartList.push(cartTempList)
+	  			
+	  			//alert(myList[0].primary)
 	  			
 	  			console.log(myList)
 	  			
+	  			
+	  			let divDom = document.createElement('div')
+	  			divDom.className = "domDiv" + count_pk
+	  			divDom.id = myList[(myList.length-1)].primary
+	  			
+	  			//alert(pkID)
+	  			
+	  			document.querySelector('.result').appendChild(divDom)
 	  			
 	  			
 	  			const brDOM = document.createElement('br')
@@ -160,6 +260,7 @@
 	  			pDOM.className = 'pdom'
 	  			
 	  			const cancelDOM = document.createElement('button')
+	  			
 			   
 	  			cancelDOM.innerText = "삭제"
 	  			cancelDOM.className = 'cancel_button'
@@ -176,23 +277,28 @@
 	  			
 	  			priceDOM.innerText = price + "원"
 	  			
-	            document.querySelector('.result').appendChild(pDOM)
-	            document.querySelector('.result').appendChild(cancelDOM)
-	            document.querySelector('.result').appendChild(brDOM)
+	            document.querySelector('.domDiv' + count_pk).appendChild(pDOM)
+	            document.querySelector('.domDiv' + count_pk).appendChild(cancelDOM)
+	            document.querySelector('.domDiv' + count_pk).appendChild(brDOM)
+	            
 	            
 	           	$(".price").empty();
 	            document.querySelector('.price').appendChild(priceDOM)
 	            
-	            
+	            //삭제
 	  			cancelDOM.addEventListener('click', function() {
-	  				var resultDIV = document.querySelector(".result")
-	  				var cancelID = Number(cancelDOM.getAttribute('id'))
+	  				let resultDIV = document.querySelector(".result")
+	  				let pkID = Number(divDom.getAttribute('id'))	  				
 	  				
-	  				resultDIV.removeChild(cancelDOM)
-	  				resultDIV.removeChild(pDOM)
-	  				resultDIV.removeChild(brDOM)
+	  				resultDIV.removeChild(divDom)
 	  				
-	  				myList.splice(cancelID, 1)
+	  				for (var i = 0; i < myList.length; i++){
+	  					if(myList[i].primary === pkID){
+	  						myList.splice(i, 1)
+	  					}
+	  				}
+	  				
+	  				
 	  				console.log(myList)
 	  				
 	  				price = price - product_price
@@ -229,6 +335,134 @@
 	  	
 	  	})
 		
+	  	
+	  	// 카트 버튼
+	  	document.querySelector(".cartBtn").addEventListener('click', function() {
+	  		console.log(myList)
+	  		
+	  		$.ajax({
+	  	        url: "http://localhost:8080/cart",
+	  	        type: "POST",
+	  	        dataType: "json",
+	  	        contentType: "application/json",
+	  	        data: JSON.stringify(cartList),
+	  	        success: function(data) {
+	  	        	alert("카트에 담았습니다.")
+	  	        	location.href="/product?id=" + pr_id
+	  	        },
+	  	        error: function(jqXHR, textStatus, errorThrown) {
+	  	            // 에러 로그는 아래처럼 확인해볼 수 있다. 
+	  	            //alert("업로드 에러\ncode : " + jqXHR.status + "\nerror message : " + jqXHR.responseText);
+	  	        }
+		  	});
+	  	
+	  	})
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	const inputEl = document.querySelector('.imgUpload')
+	
+	    const fileList = []
+	    //const imgList = []
+	  	let imgList = new FormData();
+	    let count = 0;
+	
+	    inputEl.addEventListener('change', (e) => {
+	
+	        for(let i = 0; i<e.target.files.length; i++){
+	            const fileObject = {}
+	            
+	            
+	            
+	            //imgList.push(e.target.files[i])
+	            imgList.append('files', e.target.files[i])
+	            
+	            fileObject.file = e.target.files[i]
+	            fileObject.number = count
+	
+	            fileList.push(fileObject)
+	            
+	            var blobUrl = URL.createObjectURL(e.target.files[i])
+	            
+	            const buttonDOM = document.createElement('button')
+	            buttonDOM.className = "cancel" + count
+	            buttonDOM.dataset.number = count
+	            
+	            buttonDOM.id = "btnDOM"
+	
+	            document.querySelector('.imgList').appendChild(buttonDOM)
+	
+	            const imgDOM = document.createElement('img')
+	            imgDOM.className = "addImg"
+	            imgDOM.src = blobUrl
+	
+	            document.querySelector('.cancel' + count).appendChild(imgDOM)
+	            
+	            const imgListEl = document.querySelector(".imgList")
+	
+	
+	
+	            buttonDOM.addEventListener('click', (e) => {
+	
+	                console.log('.candel' + count, "삭제")
+	                imgListEl.removeChild(buttonDOM)
+	                
+	                let buttonDomNumber = buttonDOM.dataset.number
+	
+	                console.log(buttonDomNumber)
+	
+	                for(let j=0; j < fileList.length; j++){
+	                    
+	                    if(fileList[j].number == buttonDomNumber){
+	                        fileList.splice(j, 1)
+	                    }
+	                }
+	                console.log(fileList)
+	
+	            })            
+	
+	            count++
+	        }
+	
+	       
+	       console.log("count : ", count)
+	    })
+	   	
+	    
+	    // 리뷰 ajax
+	    document.querySelector(".reviewBtn").addEventListener('click', function() {
+	    	
+	    	const reviewContent = JSON.stringify(document.querySelector(".reviewcontent").value)
+	    	
+	    	console.log(imgList)
+	    		  		
+	  		$.ajax({
+	  	        url: "http://localhost:8080/review/uplaod?id=" + ${product.id} + "&content=" + reviewContent,
+	  	        type: "POST",
+	  	     	enctype: 'multipart/form-data',
+	  	     	processData : false,
+	  	     	contentType: false,
+	  	        data: imgList,
+	  	        success: function(data) {
+	  	        	location.href="/product?id=" + pr_id
+	  	        },
+	  	        error: function(jqXHR, textStatus, errorThrown) {
+	  	            // 에러 로그는 아래처럼 확인해볼 수 있다. 
+	  	            //alert("업로드 에러\ncode : " + jqXHR.status + "\nerror message : " + jqXHR.responseText);
+	  	        }
+		  	});
+	  	
+	  	})
+	  	
+	  	
+	  	
 	  	</script>
 </body>
 </html>

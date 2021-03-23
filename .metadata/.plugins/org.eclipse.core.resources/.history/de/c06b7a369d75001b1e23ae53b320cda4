@@ -1,5 +1,0 @@
-package com.myshop.interceptor;
-
-public class AuthInterceptor {
-
-}

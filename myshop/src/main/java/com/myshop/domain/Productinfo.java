@@ -1,6 +1,5 @@
 package com.myshop.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -30,11 +29,12 @@ public class Productinfo {
 	private int add_price;
 	
 	@Enumerated(EnumType.STRING)
-	private Size size;
-	@Enumerated(EnumType.STRING)
 	private Color color;
+	@Enumerated(EnumType.STRING)
+	private Size size;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	private Product product;
 	

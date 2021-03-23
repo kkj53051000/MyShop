@@ -1,7 +1,6 @@
 package com.myshop.interceptor;
 
 import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,7 +38,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 			PrintWriter out = httpResponse.getWriter();
 			out.write(jsonResponseString);
 			
-			return false;
+			return true;
 		}else {
 			return true;
 		}
